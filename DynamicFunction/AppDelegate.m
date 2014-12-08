@@ -8,14 +8,39 @@
 
 #import "AppDelegate.h"
 
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    uint32_t code[] = {
+        0xe0800001,    // add r0, r0, #1
+        0xe12fff1e,    // br  lr
+    };
+    
+    uint32_t *p;
+    long pagesize = sysconf(_SC_PAGE_SIZE);
+    NSLog(@"pagesize %@", @(pagesize));
+    int r = posix_memalign((void **)&p, pagesize, pagesize);
+    if(r != 0){
+        int err = errno;
+        NSCAssert(NO, @"posix_memalign failed %s(%d) ", strerror(err), err);
+    }
+    int len = sizeof(code)/sizeof(code[0]);
+    for(int i=0; i<len; ++i){
+        p[i] = code[i];
+    }
+    
+    int errcode = mprotect(p, pagesize, PROT_READ | PROT_EXEC);
+    if (errcode != 0) {
+        int err = errno;
+        NSCAssert(NO, @"mprotect failed %s(%d) ", strerror(err), err);
+    }
+    
+    NSLog(@"inc(10) = %d", ((int(*)(int))p)(10));
     return YES;
 }
 

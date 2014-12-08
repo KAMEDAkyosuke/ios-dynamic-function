@@ -191,6 +191,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = KAMEDAkyosuke;
 				TargetAttributes = {
+					0C970A761A356AE6003A0F61 = {
+						DevelopmentTeam = YW7K3M3Q85;
+					};
 					0C970A911A356AE6003A0F61 = {
 						TestTargetID = 0C970A761A356AE6003A0F61;
 					};
@@ -355,12 +358,20 @@
 		0C970AA41A356AE6003A0F61 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = armv7s;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DynamicFunction/DynamicFunction-Prefix.pch";
 				INFOPLIST_FILE = "DynamicFunction/DynamicFunction-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				VALID_ARCHS = armv7s;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -368,12 +379,19 @@
 		0C970AA51A356AE6003A0F61 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = armv7s;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DynamicFunction/DynamicFunction-Prefix.pch";
 				INFOPLIST_FILE = "DynamicFunction/DynamicFunction-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				VALID_ARCHS = armv7s;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
