@@ -16,11 +16,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // 与えられた数値に 1 加算して返すコード書く
+    // 以下は armv7s 用のコードであり、armv7 及び arm64 ではそれぞれ別のコードにする必要がある。
     uint32_t code[] = {
-        0xe0800001,    // add r0, r0, #1
+        0xe2800001,    // add r0, r0, #1
         0xe12fff1e,    // br  lr
     };
     
+    // アライメントを意識してメモリを確保する
     uint32_t *p;
     long pagesize = sysconf(_SC_PAGE_SIZE);
     NSLog(@"pagesize %@", @(pagesize));
@@ -29,18 +32,19 @@
         int err = errno;
         NSCAssert(NO, @"posix_memalign failed %s(%d) ", strerror(err), err);
     }
-    int len = sizeof(code)/sizeof(code[0]);
-    for(int i=0; i<len; ++i){
-        p[i] = code[i];
-    }
     
+    // 確保したメモリにコードを書き込む
+    memcpy(p, code, sizeof(code));
+    
+    // 確保したメモリに実行権限を付与する
     int errcode = mprotect(p, pagesize, PROT_READ | PROT_EXEC);
     if (errcode != 0) {
         int err = errno;
         NSCAssert(NO, @"mprotect failed %s(%d) ", strerror(err), err);
     }
     
-    NSLog(@"inc(10) = %d", ((int(*)(int))p)(10));
+    // 確保したメモリを関数として実行する
+    NSLog(@"inc(1) = %d", ((int(*)(int))p)(1));    // > inc(1) = 2
     return YES;
 }
 
